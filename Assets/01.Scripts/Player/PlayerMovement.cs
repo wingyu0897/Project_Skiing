@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rigid;
 
 	[Header("Settings")]
+	[SerializeField] private float maxSpeed = 5f;
 	[SerializeField] private float maxAngle = 45f;
 	[SerializeField] private float turnTime = 0.5f;
 
@@ -27,8 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
 	private void Update()
 	{
-		Vector3 move = new Vector3(inputReader.InputMove.x, 0, inputReader.InputMove.y);
-		rigid.velocity = move * 5f;
+		rigid.velocity = transform.forward * maxSpeed;
 	}
 
 	private void HandleOnClick()
