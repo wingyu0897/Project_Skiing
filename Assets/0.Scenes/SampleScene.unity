@@ -819,13 +819,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049f6a038fad87f43873e3bd45220ac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 2069216018}
   distanceX: 0
   distanceXRandom: 0
   distanceY: 0
   distanceYRandom: 0
-  width: 5
-  widthRandom: 0.3
-  test: {fileID: 7152491808096441288, guid: 2878357bd2acc9c4bbd7ee310bb5dd0b, type: 3}
+  width: 8
+  widthRandom: 0.5
+  spawnDistance: 10
+  test: {fileID: 1831770619740300155, guid: 859805b6dde314d41916b25cbc3d8371, type: 3}
 --- !u!4 &2000376720
 Transform:
   m_ObjectHideFlags: 0
