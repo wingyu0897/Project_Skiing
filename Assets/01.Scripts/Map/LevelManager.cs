@@ -13,8 +13,8 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private Transform player;
 
     [Header("Setting Values")]
+	[SerializeField] private float startDistance;
     [SerializeField] private float distanceXMax;
-    [SerializeField][Range(0f, 1f)] private float distanceXRandom;
     [SerializeField] private float distanceY;
     [SerializeField][Range(0f, 1f)] private float distanceYRandom;
     [SerializeField] private float width;
@@ -43,7 +43,8 @@ public class LevelManager : MonoBehaviour
 	public void StartCreate()
 	{
         float randomWidth = width - width * Random.Range(-widthRandom, widthRandom);
-        LevelData data = new LevelData() { position = Vector2.zero, width = randomWidth };
+		Vector2 startPos = new Vector2(0, startDistance);
+        LevelData data = new LevelData() { position = startPos, width = randomWidth };
 		levelDatas.Add(data);
 		WallController wall = Instantiate(test);
 		wall.SetWalls(data);

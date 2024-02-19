@@ -842,12 +842,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2069216018}
+  startDistance: 30
   distanceXMax: 5
-  distanceXRandom: 0
-  distanceY: 5
-  distanceYRandom: 0
-  width: 8
-  widthRandom: 0.2
+  distanceY: 7
+  distanceYRandom: 0.3
+  width: 5
+  widthRandom: 0.5
   spawnDistance: 30
   test: {fileID: 1831770619740300155, guid: 859805b6dde314d41916b25cbc3d8371, type: 3}
 --- !u!4 &2000376720

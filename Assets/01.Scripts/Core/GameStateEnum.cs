@@ -1,0 +1,7 @@
+public enum GAME_STATE
+{
+	MENU,
+	READY,
+	RUNNING,
+	RESULT,
+}
