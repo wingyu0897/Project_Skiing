@@ -34,7 +34,7 @@ public class LevelManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (CheckDistance())
+		if (CheckSpawnDistance())
 		{
 			CreateLevel();
 		}
@@ -65,10 +65,15 @@ public class LevelManager : MonoBehaviour
 		wall.SetWalls(data);
 	}
 
-	public bool CheckDistance()
+	public bool CheckSpawnDistance()
 	{
 		if (levelDatas == null || levelDatas.Count == 0) return false;
 		float distance = levelDatas[levelDatas.Count - 1].position.y - player.transform.position.z;
 		return distance < spawnDistance;
+	}
+
+	public bool CheckDestroyDistance()
+	{
+		return true;
 	}
 }

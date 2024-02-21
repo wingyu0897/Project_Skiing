@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private float turnTime = 0.5f;
 
 	[Header("Flags")]
+	private bool isMove = false;
 	private bool isRight = true;
 
 	private Coroutine turnAngleCo;
@@ -25,11 +26,37 @@ public class PlayerMovement : MonoBehaviour
 
 	private void Update()
 	{
-		rigid.velocity = transform.forward * maxSpeed;
+		if (isMove)
+			rigid.velocity = transform.forward * maxSpeed;
 	}
 
+	#region Movement
+	public void ActiveMovement(bool active)
+	{
+		isMove = active;
+	}
+
+	public void StopMovement(bool reset = false)
+	{
+		rigid.velocity = Vector3.zero;
+		rigid.isKinematic = true;
+
+		if (reset)
+		{
+			if (turnAngleCo != null)
+				StopCoroutine(turnAngleCo);
+
+			transform.rotation = Quaternion.Euler(0, 0, 0);
+			transform.position = Vector3.zero;
+		}
+	}
+	#endregion
+
+	#region Angle
 	private void HandleOnClick()
 	{
+		if (!isMove) return;
+
 		isRight = !isRight;
 		ChangeAngle(isRight ? maxAngle : -maxAngle);
 	}
@@ -62,4 +89,5 @@ public class PlayerMovement : MonoBehaviour
 			yield return null;
 		}
 	}
+	#endregion
 }

@@ -1,11 +1,20 @@
 using UnityEngine;
 
-public class WallController : MonoBehaviour
+public class WallController : PoolMonobehaviour
 {
+	public override void Initialize()
+	{
+		// Nothing
+	}
+
     [SerializeField] private Transform leftWall;
     [SerializeField] private Transform rightWall;
 
-    public void SetWalls(LevelData levelData)
+	/// <summary>
+	/// 구조체 값을 바탕으로 위치, 간격을 맞추는 함수
+	/// </summary>
+	/// <param name="levelData">바탕 구조체</param>
+	public void SetWalls(LevelData levelData)
 	{
         transform.position = new Vector3(levelData.position.x, 0, levelData.position.y);
         leftWall.localPosition = new Vector3(levelData.width, 0, 0);
