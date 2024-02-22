@@ -12,5 +12,9 @@ public class PlayerController : GameStateComponent
 		{
 			player.ActiveMovement(true);
 		}
+		else if (state == GAME_STATE.READY)
+		{
+			player.StopMovement(true);
+		}
 	}
 }

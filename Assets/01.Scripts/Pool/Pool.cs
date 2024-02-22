@@ -35,6 +35,7 @@ public class Pool
 		if (items.Count > 0)
 		{
 			obj = items.Pop();
+			obj.gameObject.SetActive(true);
 		}
 		else
 		{

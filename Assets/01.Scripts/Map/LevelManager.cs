@@ -5,12 +5,14 @@ public struct LevelData
 {
     public Vector2 position;
     public float width;
+	public WallController wall;
 }
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : GameStateComponent
 {
 	[Header("References")]
 	[SerializeField] private Transform player;
+    [SerializeField] private WallController wallPrefab;
 
     [Header("Setting Values")]
 	[SerializeField] private float startDistance;
@@ -19,35 +21,53 @@ public class LevelManager : MonoBehaviour
     [SerializeField][Range(0f, 1f)] private float distanceYRandom;
     [SerializeField] private float width;
     [SerializeField][Range(0f, 1f)] private float widthRandom;
+
+	[Header("Spawning")]
 	[SerializeField] private float spawnDistance;
+	[SerializeField] private float despawnDistance;
 
-    [SerializeField] private WallController test;
+	[Header("Flags")]
+	private bool isActive = false;
 
-    private List<LevelData> levelDatas;
+    private List<LevelData> levelDatas = new();
 
-	private void Start()
+	private void Awake()
 	{
-		levelDatas = new List<LevelData>();
-		StartCreate();
-		CreateLevel();
+		//levelDatas = new List<LevelData>();
+		//StartCreate();
+		//CreateLevel();
 	}
 
 	private void Update()
 	{
+		if (!isActive) return;
+
 		if (CheckSpawnDistance())
 		{
 			CreateLevel();
 		}
+		if (CheckDestroyDistance())
+		{
+			PoolManager.Instance?.Push(levelDatas[0].wall);
+			levelDatas.RemoveAt(0);
+		}
+	}
+
+	private void CreateWall(LevelData data)
+	{
+		WallController wall = PoolManager.Instance.Pop(wallPrefab.name) as WallController;
+		wall.SetWalls(data);
+		data.wall = wall;
+		levelDatas.Add(data);
 	}
 
 	public void StartCreate()
 	{
-        float randomWidth = width - width * Random.Range(-widthRandom, widthRandom);
+		isActive = true;
+		float randomWidth = width - width * Random.Range(-widthRandom, widthRandom);
 		Vector2 startPos = new Vector2(0, startDistance);
         LevelData data = new LevelData() { position = startPos, width = randomWidth };
-		levelDatas.Add(data);
-		WallController wall = Instantiate(test);
-		wall.SetWalls(data);
+		CreateWall(data);
 	}
 
 	private void CreateLevel()
@@ -60,9 +80,7 @@ public class LevelManager : MonoBehaviour
 
 		float randomWidth = width - width * Random.Range(-widthRandom, widthRandom);
 		LevelData data = new LevelData() { position = new Vector2(x, y), width = randomWidth };
-		levelDatas.Add(data);
-		WallController wall = Instantiate(test);
-		wall.SetWalls(data);
+		CreateWall(data);
 	}
 
 	public bool CheckSpawnDistance()
@@ -74,6 +92,46 @@ public class LevelManager : MonoBehaviour
 
 	public bool CheckDestroyDistance()
 	{
-		return true;
+		if (levelDatas is null || levelDatas.Count == 0) return false;
+
+		float distance = player.transform.position.z - levelDatas[0].position.y;
+
+		return distance > despawnDistance;
+	}
+
+	private void DespawnAllLevels()
+	{
+		for (int i = 0; i < levelDatas.Count; ++i)
+		{
+			PoolManager.Instance?.Push(levelDatas[0].wall);
+			levelDatas.RemoveAt(0);
+		}
+	}
+
+	public override void OnGameStateChangedHandle(GAME_STATE state)
+	{
+		switch (state)
+		{
+			case GAME_STATE.MENU:
+				if (levelDatas.Count > 0)
+				{
+					DespawnAllLevels();
+				}
+				break;
+			case GAME_STATE.READY:
+				if (levelDatas?.Count > 0)
+				{
+					DespawnAllLevels();
+				}
+				StartCreate();
+				break;
+			case GAME_STATE.RUNNING:
+				break;
+			case GAME_STATE.RESULT:
+				isActive = false;
+				break;
+			default:
+				break;
+		}
 	}
 }

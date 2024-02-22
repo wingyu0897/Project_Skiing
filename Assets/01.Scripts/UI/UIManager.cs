@@ -1,13 +1,16 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : GameStateComponent
 {
-	[SerializeField] private Button gameStartBtn;
+	[SerializeField] private Button startBtn;
+	[SerializeField] private Button restartBtn;
 
 	private void OnEnable()
 	{
-		gameStartBtn.onClick.AddListener(OnStartClickHandle);
+		startBtn.onClick.AddListener(OnStartClickHandle);
+		restartBtn.onClick.AddListener(OnRestartClickHandle);
 	}
 
 	private void OnStartClickHandle()
@@ -15,19 +18,28 @@ public class UIManager : GameStateComponent
 		GameManager.Instance.ChangeGameState(GAME_STATE.RUNNING);
 	}
 
+	private void OnRestartClickHandle()
+	{
+		GameManager.Instance.ChangeGameState(GAME_STATE.READY);
+	}
+
 	public override void OnGameStateChangedHandle(GAME_STATE state)
 	{
 		switch (state)
 		{
 			case GAME_STATE.MENU:
+				startBtn.gameObject.SetActive(false);
+				restartBtn.gameObject.SetActive(false);
 				break;
 			case GAME_STATE.READY:
-				gameStartBtn.gameObject.SetActive(true);
+				startBtn.gameObject.SetActive(true);
+				restartBtn.gameObject.SetActive(false);
 				break;
 			case GAME_STATE.RUNNING:
-				gameStartBtn.gameObject.SetActive(false);
+				startBtn.gameObject.SetActive(false);
 				break;
 			case GAME_STATE.RESULT:
+				restartBtn.gameObject.SetActive(true);
 				break;
 			default:
 				break;

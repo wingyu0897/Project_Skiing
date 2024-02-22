@@ -21,8 +21,6 @@ public class GameManager : MonoBehaviour
 		{
 			Instance = this;
 		}
-
-		ChangeGameState(GAME_STATE.MENU);
 	}
 
 	private void OnEnable()
@@ -31,6 +29,11 @@ public class GameManager : MonoBehaviour
 		{
 			OnGameStateChanged += compo.OnGameStateChangedHandle;
 		}
+	}
+
+	private void Start()
+	{
+		ChangeGameState(GAME_STATE.READY);
 	}
 
 	private void OnDisable()

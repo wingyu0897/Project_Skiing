@@ -17,9 +17,11 @@ public class PlayerMovement : MonoBehaviour
 	private bool isRight = true;
 
 	private Coroutine turnAngleCo;
+	private int wallLayer;
 
 	private void Awake()
 	{
+		wallLayer = LayerMask.NameToLayer("Wall");
 		rigid = GetComponent<Rigidbody>();
 		inputReader.LeftClickEvent += HandleOnClick;
 	}
@@ -30,24 +32,36 @@ public class PlayerMovement : MonoBehaviour
 			rigid.velocity = transform.forward * maxSpeed;
 	}
 
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (collision.gameObject.layer == wallLayer)
+		{
+			print("Dead");
+			StopMovement();
+			GameManager.Instance?.ChangeGameState(GAME_STATE.RESULT);
+		}
+	}
+
 	#region Movement
 	public void ActiveMovement(bool active)
 	{
 		isMove = active;
+		rigid.isKinematic = false;
 	}
 
 	public void StopMovement(bool reset = false)
 	{
+		isMove = false;
 		rigid.velocity = Vector3.zero;
 		rigid.isKinematic = true;
 
+		if (turnAngleCo != null)
+			StopCoroutine(turnAngleCo);
+		
 		if (reset)
 		{
-			if (turnAngleCo != null)
-				StopCoroutine(turnAngleCo);
-
 			transform.rotation = Quaternion.Euler(0, 0, 0);
-			transform.position = Vector3.zero;
+			transform.position = Vector3.up;
 		}
 	}
 	#endregion
