@@ -1,11 +1,22 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class UIController
+{
+	public GAME_STATE state;
+	public UIControllerByState controller;
+}
+
 public class UIManager : GameStateComponent
 {
+	[SerializeField] private List<UIController> controllers = new List<UIController>();
+
 	[SerializeField] private Button startBtn;
 	[SerializeField] private Button restartBtn;
+
+	private GAME_STATE previousState = GAME_STATE.MENU;
 
 	private void OnEnable()
 	{
@@ -25,6 +36,17 @@ public class UIManager : GameStateComponent
 
 	public override void OnGameStateChangedHandle(GAME_STATE state)
 	{
+		foreach (UIController controller in controllers)
+		{
+			if (controller.state == previousState)
+			{
+				controller.controller.ExitState();
+			}
+			else if (controller.state == state)
+			{
+				controller.controller.EnterState();
+			}
+		}
 		switch (state)
 		{
 			case GAME_STATE.MENU:
@@ -44,5 +66,7 @@ public class UIManager : GameStateComponent
 			default:
 				break;
 		}
+
+		previousState = state;
 	}
 }
