@@ -31,11 +31,6 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private void Start()
-	{
-		ChangeGameState(GAME_STATE.READY);
-	}
-
 	private void OnDisable()
 	{
 		foreach (GameStateComponent compo in FindObjectsOfType<GameStateComponent>())
