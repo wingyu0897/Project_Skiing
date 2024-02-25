@@ -101,7 +101,7 @@ public class LevelManager : GameStateComponent
 
 	private void DespawnAllLevels()
 	{
-		for (int i = 0; i < levelDatas.Count; ++i)
+		while (levelDatas.Count > 0)
 		{
 			PoolManager.Instance?.Push(levelDatas[0].wall);
 			levelDatas.RemoveAt(0);

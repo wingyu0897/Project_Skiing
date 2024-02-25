@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 	[Header("References")]
 	[SerializeField] private InputReader inputReader;
     private Rigidbody rigid;
+	private Transform visualTrm;
 
 	[Header("Settings")]
 	[SerializeField] private float maxSpeed = 5f;
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		wallLayer = LayerMask.NameToLayer("Wall");
 		rigid = GetComponent<Rigidbody>();
+		visualTrm = transform.Find("Visual");
 		inputReader.LeftClickEvent += HandleOnClick;
 	}
 
@@ -36,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
 	{
 		if (collision.gameObject.layer == wallLayer)
 		{
-			print("Dead");
 			StopMovement();
 			GameManager.Instance?.ChangeGameState(GAME_STATE.RESULT);
 		}
@@ -61,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
 		if (reset)
 		{
 			transform.rotation = Quaternion.Euler(0, 0, 0);
-			transform.position = Vector3.up;
+			transform.position = Vector3.zero;
 		}
 	}
 	#endregion
