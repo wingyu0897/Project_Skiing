@@ -31,7 +31,9 @@ public class PlayerMovement : MonoBehaviour
 	private void Update()
 	{
 		if (isMove)
+		{
 			rigid.velocity = transform.forward * maxSpeed;
+		}
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -70,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 	#region Angle
 	private void HandleOnClick()
 	{
-		if (!isMove) return;
+		if (!isMove || inputReader.IsPointerOverUI()) return;
 
 		isRight = !isRight;
 		ChangeAngle(isRight ? maxAngle : -maxAngle);
