@@ -4,6 +4,8 @@ using UnityEngine.UI;
 public class ResultUIController : UIControllerByState
 {
 	[SerializeField] private Button restartButton;
+	[SerializeField] private GameObject scoreTxt;
+	[SerializeField] private GameObject highScoreTxt;
 
 	private void Awake()
 	{
@@ -18,10 +20,13 @@ public class ResultUIController : UIControllerByState
 	public override void EnterState()
 	{
 		restartButton.gameObject.SetActive(true);
+		highScoreTxt.SetActive(true);
 	}
 
 	public override void ExitState()
 	{
 		restartButton.gameObject.SetActive(false);
+		scoreTxt.SetActive(false);
+		highScoreTxt.SetActive(false);
 	}
 }

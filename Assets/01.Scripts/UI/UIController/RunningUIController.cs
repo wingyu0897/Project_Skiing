@@ -5,6 +5,7 @@ public class RunningUIController : UIControllerByState
 {
 	[SerializeField] private CanvasGroup canvasGroup;
 	[SerializeField] private Button pauseBtn;
+	[SerializeField] private GameObject scoreTxt;
 
 	private void OnEnable()
 	{
@@ -18,11 +19,12 @@ public class RunningUIController : UIControllerByState
 
 	private void PauseButtonClickHandle()
 	{
-		print("Pause!");
+
 	}
 
 	public override void EnterState()
 	{
+		scoreTxt.SetActive(true);
 		canvasGroup.alpha = 1f;
 		canvasGroup.interactable = true;
 		canvasGroup.blocksRaycasts = true;

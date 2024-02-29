@@ -55,7 +55,6 @@ public class PlayerMovement : MonoBehaviour
 	public void StopMovement(bool reset = false)
 	{
 		isMove = false;
-		rigid.velocity = Vector3.zero;
 		rigid.isKinematic = true;
 
 		if (turnAngleCo != null)
