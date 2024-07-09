@@ -50,7 +50,10 @@ public class InputReader : ScriptableObject, IPlayerActions
 
 	public bool IsPointerOverUI()
 	{
-		pointerEventData.position = Touchscreen.current.primaryTouch.position.ReadValue(); ;
+		if (Touchscreen.current != null)
+			pointerEventData.position = Touchscreen.current.primaryTouch.position.ReadValue();
+		else
+			pointerEventData.position = Mouse.current.position.ReadValue();
 		raycastResultsList.Clear();
 		EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
 		for (int i = 0; i < raycastResultsList.Count; i++)

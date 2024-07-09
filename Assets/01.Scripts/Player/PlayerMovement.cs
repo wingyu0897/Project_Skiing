@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private InputReader inputReader;
     private Rigidbody rigid;
 	private Transform visualTrm;
+	private TrailRenderer trailRenderer;
 
 	[Header("Settings")]
 	[SerializeField] private float maxSpeed = 5f;
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
 		wallLayer = LayerMask.NameToLayer("Wall");
 		rigid = GetComponent<Rigidbody>();
 		visualTrm = transform.Find("Visual");
+		trailRenderer = visualTrm.Find("Trail").GetComponent<TrailRenderer>();
 		inputReader.LeftClickEvent += HandleOnClick;
 	}
 
@@ -64,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			transform.rotation = Quaternion.Euler(0, 0, 0);
 			transform.position = Vector3.zero;
+			trailRenderer.Clear();
 		}
 	}
 	#endregion
